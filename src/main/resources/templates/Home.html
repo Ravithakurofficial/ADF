@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <title>Acoustic Direction Finder</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <style>
-        body {
-            padding: 0;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
         #map {
-            top:65px;
+            top: 65px;
             height: 650px;
             width: 60%;
             max-width: auto;
@@ -24,13 +20,12 @@
             border: 2px solid black;
             position: relative;
         }
+
         #map-container {
             position: relative;
         }
 
-
         .mapfunction {
-
             position: absolute;
             top: 10px;
             z-index: 1000;
@@ -38,56 +33,61 @@
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-
-
         }
 
         .zoom-controls {
-            position: absolute; /* Positioned absolute to place on the map */
-            top: 10px; /* Top margin within the map */
-            left: 10px; /* Left margin within the map */
-            z-index: 1000; /* On top of other elements */
-            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-            padding: 5px; /* Padding inside the zoom controls */
-            border-radius: 5px; /* Rounded corners for zoom controls */
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow effect */
+            position: absolute;
+            /* Positioned absolute to place on the map */
+            top: 10px;
+            /* Top margin within the map */
+            left: 10px;
+            /* Left margin within the map */
+            z-index: 1000;
+            /* On top of other elements */
+            background: rgba(255, 255, 255, 0.8);
+            /* Semi-transparent background */
+            padding: 5px;
+            /* Padding inside the zoom controls */
+            border-radius: 5px;
+            /* Rounded corners for zoom controls */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            /* Subtle shadow effect */
         }
 
-        #mapfunction button, #mapfunction input , .zoom-controls button {
+        #mapfunction button,
+        #mapfunction input,
+        .zoom-controls button {
             display: block;
             margin: 5% 0;
             width: 100%;
             cursor: pointer;
 
-            }
-
-            .mapfunction input[type="text"] {
-                margin-right: 10px;
-                padding: 5px;
-                border: 1px solid #ccc;
-                border-radius: 3px;
-            }
-
-            .mapfunction button {
-                padding: 5px 10px;
-                border: none;
-                border-radius: 3px;
-                background-color: #007bff;
-                color: white;
-
-            }
-
-            .mapfunction button:hover {
-                background-color: #0056b3;
-            }
-
-        .data{
-        width : 84%;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
+
+        .mapfunction input[type="text"] {
+            margin-right: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
         }
+
+        .mapfunction button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: white;
+
+        }
+
+        .mapfunction button:hover {
+            background-color: #0056b3;
+        }
+
+        .data {
+            width: 84%;
+        }
+
         .controls {
             display: flex;
             justify-content: space-between;
@@ -95,14 +95,17 @@
             margin-bottom: 10px;
             padding: 40px 40px;
         }
+
         .controls label {
             margin-right: 20px;
         }
+
         .controls select,
         .controls button {
             padding: 5px 10px;
             margin-right: 10px;
         }
+
         .serial-monitor {
             margin-top: 40px;
             width: 90%;
@@ -111,6 +114,7 @@
             margin-left: auto;
             margin-right: auto;
         }
+
         #monitor {
             width: 100%;
             height: 100%;
@@ -120,214 +124,22 @@
             resize: none;
             overflow-y: auto;
         }
-        .AzhmatAngle{
+
+        .AzhmatAngle {
             width: 35%;
             margin-top: 3%;
 
         }
-        .elevation{
+
+        .elevation {
             width: 35%;
             margin-top: 3%;
 
         }
-        .Range{
+
+        .Range {
             width: 35%;
             margin-top: 3%;
-        }
-        .projectName1,.projectName2,.projectName3 {
-            color: white;
-            font-size: 2.5em;
-            font-weight: bold;
-            margin-top: 0;
-            text-align: center;
-            margin-left : 5%;
-        }
-        .ProjectName{
-            display: flex;
-            flex-direction: column;
-            margin-left : 25%;
-        }
-        .Logo {
-            display: flex;
-            flex-direction: row;
-            background-color: #0568A1;
-            width: 98.%;
-            height: 5%;
-            border: 1px solid black;
-            padding: 10px; /* Add padding to provide spacing around content */
-        }
-        .Logo img {
-            max-width: 30%;
-            height: auto;
-            margin-bottom: 10px; /* Add margin to separate image from text */
-        }
-        .Navbar {
-            display: flex;
-            padding: 1%;
-            background-color: #0568A1;
-        }
-        .Navbar button {
-            padding: 1%;
-            color: white;
-            background-color: #0568A1;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2em;
-            transition: background-color 0.3s;
-        }
-        .Navbar button:hover {
-            background-color: #777;
-        }
-        .circle {
-                position: relative;
-                width: 23%;
-                height: 0;
-                padding-bottom: 23%;
-                border-radius: 50%;
-                border: 1px solid #333;
-                MARGIN-LEFT: 50%;
-                margin-top: -10%;
-        }
-        .inner-circle {
-            position: absolute;
-            width: 49%;
-            height: 49%;
-            border-radius: 50%;
-            border: 1px solid #333;
-            top: 49%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .number {
-            position: absolute;
-            width: 5%;
-            height: 5%;
-            text-align: center;
-            transform: translate(-50%, -50%);
-        }
-
-        .text2{
-           margin-top : 100%;
-           margin-left : 30%;
-        }
-        @media (max-width: 600px) {
-            .Navbar {
-                flex-direction: column;
-                padding: 1%;
-            }
-            #connect{
-                    margin-left: -142%;
-                    margin-top: 29%;
-            }
-            #disconnect{
-                    margin-top: 28%;
-            }
-            .controls{
-            flex-flow : wrap;
-            }
-            .Navbar button {
-                margin-bottom: 10px;
-                width: 100%;
-                padding: 10px;
-                font-size: 1.2em;
-            }
-
-            .Logo {
-                flex-direction: column;
-            }
-            .Logo img{
-               max-width: 100%;
-            }
-
-            .ProjectName {
-                margin: 0;
-                flex-direction: row;
-                gap: 8px;
-            }
-
-            .projectName1, .projectName2, .projectName3 {
-                font-size: 1.8em;
-                margin: 5px 0;
-            }
-            .data {
-                width : 98%;
-                margin-left: 2px;
-            }
-            .elevation{
-                margin-top: -14%;
-                margin-left: 55%;
-            }
-
-            .circle {
-                margin-top: 2%;
-                width: 90%;
-                padding-bottom: 90%;
-                margin-left: 0%;
-            }
-
-            .inner-circle {
-                width: 60%;
-                height: 60%;
-            }
-        }
-
-
-        @media (min-width: 601px) and (max-width: 900px) {
-            .Navbar {
-                flex-direction: row;
-                padding: 1%;
-                justify-content: space-around;
-            }
-
-            .Navbar button {
-                padding: 10px 20px;
-                font-size: 1.4em;
-                margin: 0 10px;
-            }
-
-            .Logo {
-                justify-content: space-between;
-                padding: 10px 20px;
-            }
-
-            .ProjectName {
-                margin: 0;
-            }
-
-            .projectName1, .projectName2, .projectName3 {
-                font-size: 2em;
-                margin: 0;
-            }
-
-            .circle {
-                width: 60%;
-                padding-bottom: 60%;
-            }
-
-            .inner-circle {
-                width: 55%;
-                height: 55%;
-            }
-
-            .data {
-                width: 100%;
-                display: flex;
-                justify-content: space-around;
-            }
-
-            .AzhmatAngle, .elevation, .Range {
-                width: 30%;
-                margin-top: 0;
-            }
-        }
-        @media (min-width: 901px) {
-            .Navbar {
-                padding: 1.5%;
-            }
-            .Navbar button {
-                padding: 1%;
-                font-size: 1.2em;
-            }
         }
 
         .azimuth-hand {
@@ -340,7 +152,8 @@
             transform-origin: bottom center;
             transform: translate(-50%, -100%) rotate(0deg);
             box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
-            pointer-events: none; /* To prevent any interference with clicking */
+            pointer-events: none;
+            /* To prevent any interference with clicking */
             z-index: 1;
         }
 
@@ -367,31 +180,89 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 2;
-            border: 2px solid red; /* Match the color of the azimuth hand */
+            border: 2px solid red;
+            /* Match the color of the azimuth hand */
         }
+
+        .circle {
+            position: relative;
+            width: 50vw; /* Set width relative to viewport width */
+            height: 50vw;
+            max-width: 400px; /* Set a max-width for larger screens */
+            max-height: 400px;
+            border-radius: 50%;
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .inner-circle {
+            position: absolute;
+            width: 49%;
+            height: 49%;
+            border-radius: 50%;
+            border: 1px solid #333;
+            top: 49%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .number {
+            position: absolute;
+            width: 5%;
+            height: 5%;
+            text-align: center;
+            transform: translate(-50%, -50%);
+        }
+
+        .text2 {
+            margin-top: 100%;
+            margin-left: 30%;
+        }
+        @media (max-width: 900px) {
+          .config-page, .config-button {
+             display: none;
+          }
+}
+
+    }
     </style>
 </head>
+
 <body>
-<div class="Navbar">
-    <button onclick="showPage('home')">Home</button>
-    <button onclick="showPage('config')">Config</button>
-    <button onclick="showPage('map')">Map</button>
-</div>
 <div id="app"></div>
 <script>
 let monitorData = ''; // Global variable to store monitor data
 let graphData = []; // Global variable to store all graph data points
+
 const pages = {
     home: `
-        <div class="Logo">
-            <img src="https://www.drdo.gov.in/drdo/sites/default/files/drdo_logo_0.png?w=100" alt="Logo">
-            <div class="ProjectName">
-                <div class="projectName1">Acoustic</div>
-                <div class="projectName2">Direction</div>
-                <div class="projectName3">Finder</div>
+        <header data-bs-theme="dark">
+            <div class="text-bg-dark collapse" id="navbarHeader">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-7 py-4">
+                            <div class="container text-light col gap-3 d-flex justify-content-center my-auto">
+                                <button class="btn button-sm btn-dark active" onclick="showPage('home')">Home</button>
+                                <button class="btn button-sm btn-dark config-button" onclick="showPage('config')">Config</button>
+                                <button class="btn button-sm btn-dark" onclick="showPage('map')">Map</button>
+                                <button class="btn button-sm btn-dark" onclick="showPage('events')">Events</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="container">
+            <div class="navbar navbar-dark bg-dark shadow-sm">
+                <div class="container">
+                    <h1 class="display-3 fw-bold text-center p-2 text-white">Acoustic Direction Finder</h1>
+                    <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div class="container d-flex justify-content-center">
             <div class="data">
                 <div class="AzhmatAngle">
                     <label>Azimuth angle (Degree)*:</label>
@@ -406,25 +277,45 @@ const pages = {
                     <input class="range" id="range" type="number" value="0">
                 </div>
             </div>
-            <div class="circle" id="circle">
-                <div class="inner-circle" id="inner-circle"></div>
-                <div class="circle-center"></div>
-                <div id="azimuth-hand" class="azimuth-hand"></div>
-                <h3 class="text2">Directional Clock</h3>
-            </div>
-             <div id="graph" style="width:800px;height:800px;"></div> <!-- Graph container -->
         </div>
-    `,
+        <div class="container d-grid justify-content-center">
+            <h3 class="text-center m-5 p-5 fw-bold">Directional Clock</h3>
+            <div class="container">
+                <div class="circle" id="circle">
+                    <div class="inner-circle" id="inner-circle"></div>
+                    <div class="circle-center"></div>
+                    <div id="azimuth-hand" class="azimuth-hand"></div>
+                </div>
+            </div>
+            <div class="col" id="graph"></div> <!-- Graph container -->
+        </div>`,
+
     config: `
-        <div class="Logo">
-            <img src="https://www.drdo.gov.in/drdo/sites/default/files/drdo_logo_0.png?w=100" alt="Logo">
-            <div class="ProjectName">
-                <div class="projectName1">Acoustic</div>
-                <div class="projectName2">Direction</div>
-                <div class="projectName3">Finder</div>
+        <header data-bs-theme="dark">
+            <div class="text-bg-dark collapse" id="navbarHeader">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-7 py-4">
+                            <div class="container text-light col gap-3 d-flex justify-content-center my-auto">
+                                <button class="btn button-sm btn-dark active" onclick="showPage('home')">Home</button>
+                                <button class="btn button-sm btn-dark config-button" onclick="showPage('config')">Config</button>
+                                <button class="btn button-sm btn-dark" onclick="showPage('map')">Map</button>
+                                <button class="btn button-sm btn-dark" onclick="showPage('events')">Events</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="container">
+            <div class="navbar navbar-dark bg-dark shadow-sm">
+                <div class="container">
+                    <h1 class="display-3 fw-bold text-center p-2 text-white">Acoustic Direction Finder</h1>
+                    <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div class="container config-page">
             <h1>Configuration Page</h1>
             <div class="controls">
                 <label for="bit-rate">Bit Rate:</label>
@@ -434,47 +325,154 @@ const pages = {
                     <option value="19200">19200</option>
                 </select>
                 <br><br>
-                <button id="connect">Connect</button>
-                <button id="disconnect" disabled>Disconnect</button>
+                <button class="btn button-sm btn-success" id="connect">Connect</button>
+                <button class="btn button-sm btn-danger" id="disconnect" disabled>Disconnect</button>
             </div>
             <div class="serial-monitor">
                 <textarea id="monitor" readonly></textarea>
             </div>
-        </div>
-    `,
-    map: `
-    <div class="Logo">
-        <img src="https://www.drdo.gov.in/drdo/sites/default/files/drdo_logo_0.png?w=100" alt="Logo">
-        <div class="ProjectName">
-            <div class="projectName1">Acoustic</div>
-            <div class="projectName2">Direction</div>
-            <div class="projectName3">Finder</div>
-        </div>
-    </div>
-    <div id="map-container">
-        <div id="map">
-    </div>
+        </div>`,
 
-    <div class="mapfunction" >
-        <input type="text" id="search" placeholder="Search location...">
-        <button onclick="searchLocation()">Search</button>
-    </div>
-    `
+    map: `
+        <header data-bs-theme="dark">
+            <div class="text-bg-dark collapse" id="navbarHeader">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-7 py-4">
+                            <div class="container text-light col gap-3 d-flex justify-content-center my-auto">
+                                <button class="btn button-sm btn-dark active" onclick="showPage('home')">Home</button>
+                                <button class="btn button-sm btn-dark config-button" onclick="showPage('config')">Config</button>
+                                <button class="btn button-sm btn-dark" onclick="showPage('map')">Map</button>
+                                <button class="btn button-sm btn-dark" onclick="showPage('events')">Events</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar navbar-dark bg-dark shadow-sm">
+                <div class="container">
+                    <h1 class="display-3 fw-bold text-center p-2 text-white">Acoustic Direction Finder</h1>
+                    <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div id="map-container">
+            <div class="mapfunction">
+                <input type="text" id="search" placeholder="Search location...">
+                <button onclick="searched()">Search</button>
+            </div>
+            <div id="map"></div>
+        </div>`,
+
+    events: `
+        <header data-bs-theme="dark">
+            <div class="text-bg-dark collapse" id="navbarHeader">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-7 py-4">
+                            <div class="container text-light col gap-3 d-flex justify-content-center my-auto">
+                                <button class="btn button-sm btn-dark active" onclick="showPage('home')">Home</button>
+                                <button class="btn button-sm btn-dark config-button" onclick="showPage('config')">Config</button>
+                                <button class="btn button-sm btn-dark" onclick="showPage('map')">Map</button>
+                                <button class="btn button-sm btn-dark" onclick="showPage('events')">Events</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar navbar-dark bg-dark shadow-sm">
+                <div class="container">
+                    <h1 class="display-3 fw-bold text-center p-2 text-white">Acoustic Direction Finder</h1>
+                    <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <h2 class="text-center mt-4">Event Logs</h2>
+            <table class="table table-dark table-striped mt-5">
+                <thead>
+                    <tr>
+                        <th scope="col">Event ID</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Azimuth (Theta)</th>
+                        <th scope="col">Elevation</th>
+                        <th scope="col">Expected Range</th>
+                        <th scope="col">New Coordinates</th>
+                        <th scope="col">Old Coordinates</th>
+                        <th scope="col"> Click </th>
+                    </tr>
+                </thead>
+                <tbody id="eventTableBody">
+                    <!-- Event Rows Will Be Dynamically Inserted Here -->
+                </tbody>
+            </table>
+        </div>`
 };
 
+// Function to display pages based on user navigation
 function showPage(page) {
     document.getElementById('app').innerHTML = pages[page];
     if (page === 'home') {
         setupHomePage();
     } else if (page === 'config') {
         setupConfigPage();
+    } else if (page === 'map') {
+        setupMapPage();
+    } else if (page === 'events') {
+        setupEventsPage(); // Call the setup function for the Events page
     }
-    else if (page === 'map'){
-    setupMapPage();
+}
+function setupEventsPage() {
+    fetch('/api/events')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const eventTableBody = document.getElementById('eventTableBody');
+            eventTableBody.innerHTML = ''; // Clear previous data
+
+            data.forEach(event => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${event.id}</td>
+                    <td>${event.timestamp}</td>
+                    <td>${event.azmat}</td>
+                    <td>${event.elevation}</td>
+                    <td>${event.expectedRange}</td>
+                    <td>${event.latitude}, ${event.longitude}</td>
+                    <td>${event.serverLatitude}, ${event.serverLongitude}</td>
+                    <td><button class="btn btn-info" onclick="updateHomeAndMap('AZ${event.azmat}', 'ev${event.elevation}', 'r${event.expectedRange}', 'dont')">Show Data</button></td>
+                `;
+                eventTableBody.appendChild(row); // Append each row to the table body
+            });
+        })
+        .catch(error => console.error('Error fetching event data:', error));
+}
+
+async function updateHomeAndMap(azmat, elevation, expectedRange, keyword) {
+    try {
+        const data = `${azmat} ${elevation} ${expectedRange} ${keyword}`; // Format the data correctly
+        const response = await fetch('/api/serial-data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ data }) // Send the data as JSON
+        });
+
+        if (!response.ok) throw new Error('Network response was not ok');
+        console.log('Response from backend:', await response.text());
+    } catch (error) {
+        console.error('Error sending data to backend:', error);
     }
 }
 
-
+// Set up the Home Page
 function setupHomePage() {
     const azInput = document.getElementById('az');
     const elevationInput = document.getElementById('eleva');
@@ -482,55 +480,51 @@ function setupHomePage() {
     const azimuthHand = document.getElementById('azimuth-hand');
     const circle = document.getElementById('circle');
     const innerCircle = document.getElementById('inner-circle');
-
     const radius = circle.offsetWidth / 2;
     const centerX = radius;
     const centerY = radius;
     const innerRadius = innerCircle.offsetWidth / 2;
     const innerCenterX = centerX;
     const innerCenterY = centerY;
+
+    // Draw 3D Graph
     function drawGraph() {
-    const graphDiv = document.getElementById('graph');
-
-    const data = [{
-      type: 'scatter3d',
-      mode: 'markers',
-      x: graphData.map(d => d.azimuth),
-      y: graphData.map(d => d.elevation),
-      z: graphData.map(d => d.range),
-      marker: {
-        size: 5,
-        color: graphData.map(d => d.range),
-        colorscale: 'Viridis'
-      }
-    }];
-     const layout = {
-      scene: {
-        xaxis: { title: 'Azimuth Angle (Degree)' },
-        yaxis: { title: 'Elevation Angle (Degree)' },
-        zaxis: { title: 'Range (meters)' }
-      }
-    };
-
-    Plotly.newPlot(graphDiv, data, layout);
-  }
-
-    function createNumbers() {
-        for (let i = 0; i < 360; i += 30) {
-        // Adjust to start at 3 o'clock position
-        const angle = (360 - i) * (Math.PI / 180);
-        const x = centerX + radius * 0.85 * Math.cos(angle);
-        const y = centerY + radius * 0.85 * Math.sin(angle);
-        const number = document.createElement('div');
-        number.className = 'number';
-        number.textContent = i;
-        number.style.left = `${(x / circle.offsetWidth) * 100}%`;
-        number.style.top = `${(y / circle.offsetHeight) * 100}%`;
-
-
-        circle.appendChild(number);
+        const graphDiv = document.getElementById('graph');
+        const data = [{
+            type: 'scatter3d',
+            mode: 'markers',
+            x: graphData.map(d => d.azimuth),
+            y: graphData.map(d => d.elevation),
+            z: graphData.map(d => d.range),
+            marker: {
+                size: 5,
+                color: graphData.map(d => d.range),
+                colorscale: 'Viridis'
+            }
+        }];
+        const layout = {
+            scene: {
+                xaxis: { title: 'Azimuth Angle (Degree)' },
+                yaxis: { title: 'Elevation Angle (Degree)' },
+                zaxis: { title: 'Range (meters)' }
+            }
+        };
+        Plotly.newPlot(graphDiv, data, layout);
     }
 
+    // Create Numbers on Circle
+    function createNumbers() {
+        for (let i = 0; i < 360; i += 30) {
+            const angle = (360 - i) * (Math.PI / 180);
+            const x = centerX + radius * 0.85 * Math.cos(angle);
+            const y = centerY + radius * 0.85 * Math.sin(angle);
+            const number = document.createElement('div');
+            number.className = 'number';
+            number.textContent = i;
+            number.style.left = `${(x / circle.offsetWidth) * 100}%`;
+            number.style.top = `${(y / circle.offsetHeight) * 100}%`;
+            circle.appendChild(number);
+        }
 
         for (let i = 1; i <= 12; i++) {
             const angle = (i - 3) * (Math.PI * 2) / 12;
@@ -545,171 +539,180 @@ function setupHomePage() {
         }
     }
 
-
-
+    // Update Azimuth Hand
     function updateAzimuthHand() {
-    const azValue = parseInt(azInput.value, 10) || 0;
-    // Adjust angle so that 90 degrees is at the top and move anticlockwise
-    const azimuthAngle = (90 - azValue) * (Math.PI / 180);
-    azimuthHand.style.transform = `translate(-50%, -100%) rotate(${azimuthAngle}rad)`;
-}
+        const azValue = parseInt(azInput.value, 10) || 0;
+        const azimuthAngle = (90 - azValue) * (Math.PI / 180);
+        azimuthHand.style.transform = `translate(-50%, -100%) rotate(${azimuthAngle}rad)`;
+    }
 
+    // Update Home Page with new data
     function updateValues(data) {
         const { azmat, elevation, range } = data;
         azInput.value = azmat;
         elevationInput.value = elevation;
         rangeInput.value = range;
 
-        // Add the new data point to graphData
         graphData.push({ azimuth: azmat, elevation: elevation, range: range });
         drawGraph();
         updateAzimuthHand();
     }
 
+
+
+    // Fetch Data periodically
     function fetchData() {
         fetch('/api/update-data')
             .then(response => response.json())
-            .then(data => {
-                updateValues(data);
-            })
+            .then(data => updateValues(data))
             .catch(error => console.error('Error fetching data:', error));
     }
 
     createNumbers();
     updateAzimuthHand();
-
     fetchData();
-    setInterval(fetchData, 1000); // Fetch data every second
+    setInterval(fetchData, 1000);
 
     azInput.addEventListener('input', updateAzimuthHand);
 }
 
-function setupConfigPage() {
-    const monitor = document.getElementById('monitor');
-    const bitRateInput = document.getElementById('bit-rate');
-    let port = null;
-    let reader = null;
-    let writer = null;
+    // Setup Config Page
+    function setupConfigPage() {
+        const monitor = document.getElementById('monitor');
+        const bitRateInput = document.getElementById('bit-rate');
+        let port = null;
+        let reader = null;
+        let writer = null;
 
-    monitor.value = monitorData; // Load persisted monitor data
-    monitor.scrollTop = monitor.scrollHeight; // Auto-scroll to bottom
-
-    async function connect() {
-        const bitRate = bitRateInput.value;
-
-        try {
-            port = await navigator.serial.requestPort(); // Prompt the user to select a port
-            if (port && bitRate) {
-                await port.open({ baudRate: parseInt(bitRate) }); // Open the port with the selected bit rate
-
-                reader = port.readable.getReader();
-                writer = port.writable.getWriter();
-
-                monitorData += `Connected successfully at ${bitRate} baud.\n`;
-                updateMonitor();
-
-                document.getElementById('disconnect').disabled = false;
-                readLoop();
-            } else {
-                monitorData += 'Please select a Bit Rate.\n';
-                updateMonitor();
-            }
-        } catch (error) {
-            monitorData += `Error connecting: ${error.message}\n`;
-            updateMonitor();
-        }
-    }
-
-    async function readLoop() {
-        while (port.readable) {
-            try {
-                const { value, done } = await reader.read();
-                if (done) break;
-
-                const decodedData = new TextDecoder().decode(value);
-                monitorData += `Data received: ${decodedData}\n`;
-                updateMonitor();
-                await sendDataToBackend(decodedData);
-            } catch (error) {
-                console.error('Error reading data:', error);
-                break;
-            }
-        }
-    }
-
-    async function sendDataToBackend(data) {
-        try {
-            const response = await fetch('/api/serial-data', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ data })
-            });
-
-            if (!response.ok) throw new Error('Network response was not ok');
-            console.log('Response from backend:', await response.text());
-        } catch (error) {
-            console.error('Error sending data to backend:', error);
-        }
-    }
-
-    async function disconnect() {
-        if (reader) reader.releaseLock();
-        if (writer) writer.releaseLock();
-        if (port && port.locked) await port.close();
-
-        monitorData += 'Disconnected.\n';
-        updateMonitor();
-        document.getElementById('disconnect').disabled = true;
-    }
-
-    function updateMonitor() {
-        monitor.value = monitorData;
+        monitor.value = monitorData; // Load persisted monitor data
         monitor.scrollTop = monitor.scrollHeight; // Auto-scroll to bottom
-    }
 
-    document.getElementById('connect').addEventListener('click', connect);
-    document.getElementById('disconnect').addEventListener('click', disconnect);
+        async function connect() {
+            const bitRate = bitRateInput.value;
+
+            try {
+                port = await navigator.serial.requestPort(); // Prompt user to select a port
+                if (port && bitRate) {
+                    await port.open({ baudRate: parseInt(bitRate) });
+
+                    reader = port.readable.getReader();
+                    writer = port.writable.getWriter();
+
+                    monitorData += `Connected successfully at ${bitRate} baud.\n`;
+                    updateMonitor();
+
+                    document.getElementById('disconnect').disabled = false;
+                    readLoop();
+                } else {
+                    monitorData += 'Please select a Bit Rate.\n';
+                    updateMonitor();
+                }
+            } catch (error) {
+                monitorData += `Error connecting: ${error.message}\n`;
+                updateMonitor();
+            }
+        }
+
+        async function readLoop() {
+            while (port.readable) {
+                try {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+
+                    const decodedData = new TextDecoder().decode(value);
+                    monitorData += `Data received: ${decodedData}\n`;
+                    updateMonitor();
+                    await sendDataToBackend(decodedData);
+                } catch (error) {
+                    console.error('Error reading data:', error);
+                    break;
+                }
+            }
+        }
+
+        async function sendDataToBackend(data) {
+    try {
+        // First, send the data to the backend
+        const serialDataResponse = await fetch('/api/serial-data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ data })
+        });
+
+        if (!serialDataResponse.ok) throw new Error('Network response was not ok');
+        console.log('Response from backend:', await serialDataResponse.text());
+
+        // If the serial data was successfully sent, trigger the notification
+        const notificationData = {
+            title: 'New Event',
+            body: 'There is a new event occurring at the location'
+        };
+
+        const notificationResponse = await fetch('/sendNotification', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(notificationData)
+        });
+
+        if (!notificationResponse.ok) throw new Error('Failed to send notification');
+        console.log('Notification sent successfully:', await notificationResponse.text());
+
+    } catch (error) {
+        console.error('Error occurred:', error);
+    }
 }
-function setupMapPage() {
-    // Initialize the map centered on the server's initial location
-    var map = L.map('map').setView([28.640627304904214, 77.04703758721507], 18);
 
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '© sspl'
-    }).addTo(map);
 
-    // Marker for the server's location
-    var originMarker = L.marker([28.640627304904214, 77.04703758721507]).addTo(map)
-        .bindPopup("Server Location").openPopup();
+        async function disconnect() {
+            if (reader) reader.releaseLock();
+            if (writer) writer.releaseLock();
+            if (port && port.locked) await port.close();
 
-    // Marker for the calculated coordinates
-    var calculatedMarker = L.marker([0, 0]).addTo(map); // Placeholder marker
+            monitorData += 'Disconnected.\n';
+            updateMonitor();
+            document.getElementById('disconnect').disabled = true;
+        }
 
-    // Function to update the marker based on backend data
-    function updateMarker() {
-        fetch('/api/map-geo')
-            .then(response => response.json())
+        function updateMonitor() {
+            monitor.value = monitorData;
+            monitor.scrollTop = monitor.scrollHeight;
+        }
 
-            .then(data => {
-                var latitude = data.latitude;
-                var longitude = data.longitude;
-
-                // Update the marker position
-                calculatedMarker.setLatLng([latitude, longitude])
-                    .bindPopup("Calculated Position: Latitude " + latitude + ", Longitude " + longitude)
-                    .openPopup();
-
-                // Center the map on the updated position
-                map.setView([latitude, longitude], 18);
-            })
-            .catch(error => console.error('Error fetching data:', error));
+        document.getElementById('connect').addEventListener('click', connect);
+        document.getElementById('disconnect').addEventListener('click', disconnect);
     }
 
-    // Call updateMarker function every 5 seconds (or any interval you prefer)
-    setInterval(updateMarker,5000);
+    // Setup Map Page
+    function setupMapPage() {
+        var map = L.map('map').setView([28.640627304904214, 77.04703758721507], 18);
 
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© sspl'
+        }).addTo(map);
+
+        var originMarker = L.marker([28.640627304904214, 77.04703758721507]).addTo(map)
+            .bindPopup("Server Location").openPopup();
+
+        var calculatedMarker = L.marker([0, 0]).addTo(map); // Placeholder marker
+
+        function updateMarker() {
+            fetch('/api/map-geo')
+                .then(response => response.json())
+                .then(data => {
+                    var latitude = data.latitude;
+                    var longitude = data.longitude;
+
+                    calculatedMarker.setLatLng([latitude, longitude])
+                        .bindPopup("Calculated Position: Latitude " + latitude + ", Longitude " + longitude)
+                        .openPopup();
+
+                    map.setView([latitude, longitude], 15); // Adjust zoom level as needed
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        setInterval(updateMarker, 5000); // Fetch new data every 5 seconds
     // Zoom functions
     function zoomIn() {
         map.zoomIn();
@@ -739,6 +742,20 @@ function setupMapPage() {
 
 // Initialize the default page
 showPage('home');
+ </script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous">
 </script>
 </body>
+
 </html>

@@ -29,4 +29,18 @@ public class database {
 
     @Column(name = "ExpectedRange")
     private double expectedRange;
+
+    @Column(name = "Longitude")
+    private double longitude;
+
+    // Add Latitude field
+    @Column(name = "Latitude")
+    private double latitude;
+
+    @Column(name = "Server_Longitude")
+    private double serverLongitude;
+
+    // Add Latitude field
+    @Column(name = "Server_Latitude")
+    private double serverLatitude;
 }
